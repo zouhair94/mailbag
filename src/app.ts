@@ -22,3 +22,40 @@ app.get("/mailbox",async (req: Request, res: Response) =>{
     }
 });
 
+app.get("/mailboxes/:mailbox",async(req: Request, res: Response) => {
+    try {
+        const imapworker: IMAP.worker = new IMAP.worker(Serverinfo);
+        const messages: IMAP.IMessage[] = await imapworker.lisMessages({
+            mailbox: req.params.mailbox
+        });
+        res.json(messages);
+    } catch (error) {
+        res.send(error);    
+    }
+});
+
+app.get("/messages/:mailbox/:id",async (req: Request, res: Response)=>{
+    try {
+        const {mailbox, id} = req.params;
+        const imapworker: IMAP.worker = new IMAP.worker(Serverinfo);
+        const messageBody: string = await imapworker.getMessageBody({
+            mailbox, id
+        });
+        res.send(messageBody);
+    } catch (error) {
+        res.send(error);
+    }
+});
+
+app.delete("/messages/:mailbox/:id",async (req:Request, res: Response) => {
+    try {
+        const {mailbox, id} = req.params;
+        const imapWorker: IMAP.worker = new IMAP.worker(Serverinfo);
+        await imapWorker.deleteMessage({
+            mailbox,id
+        });
+        res.send("ok");
+    } catch (error) {
+        res.send(error);
+    }
+});
