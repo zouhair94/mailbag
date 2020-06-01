@@ -7,11 +7,12 @@ import * as contact from "./contatcs";
 import {IContact} from "./contatcs";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const app: Express = express();
 app.use(express.json());
 
-app.use("/",express.static(__dirname,"../../client/dist"));
+app.use("/",express.static(__dirname,"../client"));
 
 app.get("/mailbox",async (req: Request, res: Response) =>{
     try {
