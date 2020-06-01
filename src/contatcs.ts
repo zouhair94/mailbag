@@ -26,4 +26,17 @@ export class Worker {
             });
         });
     }
+
+    public addContact(contact: IContact) : Promise<IContact|Error>{
+        return new Promise((res, rej)=>{
+            this.db.insert(contact,
+                (err: Error, doc: IContact) => {
+                    if(err) rej(err);
+                    else {
+                        res(doc);
+                    }
+                }
+                );
+        });
+    }
 }
