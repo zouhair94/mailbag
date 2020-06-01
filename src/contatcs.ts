@@ -39,4 +39,17 @@ export class Worker {
                 );
         });
     }
+
+    public deleteContact(inID: string): Promise<string> {
+        return new Promise((res, rej) => {
+            this.db.remove({id: inID},{},
+                (err: Error, numberRemoved: number) => {
+                    if(err) rej(err);
+                    else {
+                        res();
+                    }
+                }
+                );
+        });
+    }
 }
