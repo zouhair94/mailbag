@@ -15,7 +15,7 @@ export class Worker {
             transport.sendMail(inOptions,(err: Error|null, info: SentMessageInfo) => {
                 if (err) rej(err);
                 else {
-                    res()
+                    res();
                 }
             })
         });
