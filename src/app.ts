@@ -6,13 +6,14 @@ import * as smtp from "./SMTP";
 import * as contact from "./contatcs";
 import {IContact} from "./contatcs";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-
+import cors from "cors";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const app: Express = express();
 app.use(express.json());
+app.use(cors());
 
-app.use("/",express.static(__dirname,"../client"));
+app.use("/",express.static(path.join(__dirname,"../client")));
 
 app.get("/mailbox",async (req: Request, res: Response) =>{
     try {
@@ -27,7 +28,7 @@ app.get("/mailbox",async (req: Request, res: Response) =>{
 app.get("/mailboxes/:mailbox",async(req: Request, res: Response) => {
     try {
         const imapworker: IMAP.Worker = new IMAP.Worker(Serverinfo);
-        const messages: IMAP.IMessage[] = await imapworker.lisMessages({
+        const messages: IMAP.IMessage[] = await imapworker.listMessages({
             mailbox: req.params.mailbox
         });
         res.json(messages);
