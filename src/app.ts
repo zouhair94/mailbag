@@ -37,9 +37,10 @@ app.get("/mailboxes/:mailbox",async(req: Request, res: Response) => {
     }
 });
 
-app.get("/messages/:mailbox/:id",async (req: Request, res: Response)=>{
+app.get("/messages/:mailbox/:ID",async (req: Request, res: Response)=>{
     try {
-        const {mailbox, id} = req.params;
+        let {mailbox, ID} = req.params;
+        let id: number = parseInt(ID,10);
         const imapworker: IMAP.Worker = new IMAP.Worker(Serverinfo);
         const messageBody: string = await imapworker.getMessageBody({
             mailbox, id
@@ -50,9 +51,10 @@ app.get("/messages/:mailbox/:id",async (req: Request, res: Response)=>{
     }
 });
 
-app.delete("/messages/:mailbox/:id",async (req:Request, res: Response) => {
+app.delete("/messages/:mailbox/:ID",async (req:Request, res: Response) => {
     try {
-        const {mailbox, id} = req.params;
+        const {mailbox, ID} = req.params;
+        let id: number = parseInt(ID,10);
         const imapWorker: IMAP.Worker = new IMAP.Worker(Serverinfo);
         await imapWorker.deleteMessage({
             mailbox,id
